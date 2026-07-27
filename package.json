@@ -1,0 +1,14 @@
+{
+  "name": "niwatama-reaction-router",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Slackリアクション→Notion反映のポーリング版（GitHub Actionsで5分ごと・PCオフでも動く）",
+  "scripts": {
+    "poll": "node poll.js --apply",
+    "dry": "node poll.js"
+  },
+  "dependencies": {
+    "@slack/web-api": "^7.19.0"
+  }
+}
