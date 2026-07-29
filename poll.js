@@ -14,8 +14,8 @@ const DB = '386781c3-31f8-8075-9e05-fd3757e97822'; // タスク管理ツール
 const LOOKBACK_DAYS = 5;                   // 過去何日分のスレッドを見るか
 const STATE = new URL('./state/processed.json', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
 
-const EMOJI_THUMB = 'samune', EMOJI_DONE = 'kanryou', EMOJI_VER1 = 'kakunin', EMOJI_POSTED = 'sumi', EMOJI_CONFIRM = 'robot_face';
-const TRIGGERS = [EMOJI_THUMB, EMOJI_DONE, EMOJI_VER1, EMOJI_POSTED];
+const EMOJI_THUMB = 'samune', EMOJI_DONE = 'kanryou', EMOJI_VER1 = 'kakuninn', EMOJI_POSTED = 'sumi', EMOJI_REVISE = 'syuusei', EMOJI_CONFIRM = 'robot_face';
+const TRIGGERS = [EMOJI_THUMB, EMOJI_DONE, EMOJI_VER1, EMOJI_POSTED, EMOJI_REVISE];
 
 // --- トークン（env優先・ローカルは .claude.json フォールバック） ---
 let NT = process.env.NOTION_TOKEN;
@@ -85,6 +85,7 @@ async function act(reaction, msg, task) {
     await patch(task.id, props); return '確認待ち' + (url ? ' 修正前有' : '');
   }
   if (reaction === EMOJI_POSTED) { await patch(task.id, { 'ステータス': { status: { name: '投稿済み' } } }); return '投稿済み'; }
+  if (reaction === EMOJI_REVISE) { await patch(task.id, { 'ステータス': { status: { name: '修正中' } } }); return '修正中'; }
 }
 
 async function main() {

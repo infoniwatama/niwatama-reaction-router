@@ -37,10 +37,11 @@ async function main() {
     const kind = (task.properties['タスクの種類']?.multi_select || []).map(x => x.name).join(''); const isLong = /ロング/.test(kind) || /ロング/.test(nm(task));
     const a = agg[task.id] || (agg[task.id] = { task, target: null, kanpake: null, shusei: null, img: null });
     for (const m of msgs) for (const rx of (m.reactions || [])) {
-      if (!['samune', 'kanryou', 'kakunin', 'sumi'].includes(rx.name)) continue;
+      if (!['samune', 'kanryou', 'kakuninn', 'sumi', 'syuusei'].includes(rx.name)) continue;
       stateKeys.push(m.ts + ':' + rx.name);
       let tgt = null;
-      if (rx.name === 'kakunin') { tgt = '確認待ち'; if (urlOf(m)) a.shusei = urlOf(m); }
+      if (rx.name === 'kakuninn') { tgt = '確認待ち'; if (urlOf(m)) a.shusei = urlOf(m); }
+      else if (rx.name === 'syuusei') tgt = '修正中';
       else if (rx.name === 'kanryou') { tgt = isLong ? 'サムネ待ち' : '投稿待ち'; if (urlOf(m)) a.kanpake = urlOf(m); }
       else if (rx.name === 'samune') { tgt = '投稿待ち'; if (imgOf(m)) a.img = imgOf(m); }
       else if (rx.name === 'sumi') tgt = '投稿済み';
